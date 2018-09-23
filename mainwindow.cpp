@@ -131,12 +131,3 @@ void MainWindow::keyReleaseEvent(QKeyEvent *k) {
         }
     }
 }
-
-void MainWindow::on_actionListConnectedDevices_triggered()
-{
-    //PairedDevicesWindow pdw;
-    //pdw.setModal(true);
-    //pdw.exec();
-    m_pairedDevicesWindow = new PairedDevicesWindow(this);
-    m_pairedDevicesWindow->show();
-}

@@ -1,5 +1,10 @@
-*.vs
+Tankki-Qt
+*.vscode
 *.user
 Makefile
 .qmake.stash
 build/
+moc_*.cpp
+moc_*.h
+*.o
+ui_*.h
