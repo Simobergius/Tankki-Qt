@@ -18,7 +18,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-public slots:
 signals:
     void actionForwardButtonClick();
     void actionForwardButtonRelease();
@@ -35,6 +34,14 @@ signals:
     void actionLaserToggle();
     void actionListConnectedDevices();
 
+public slots:
+    void deviceSelected(QBluetoothDeviceInfo);
+
+    void socketError(QBluetoothSocket::SocketError);
+    void onConnected();
+    void disconnected();
+    void readData();
+    void socketStateChanged(QBluetoothSocket::SocketState);
 private slots:
     void laserToggle(bool);
     void onCannonButtonClick();
@@ -50,6 +57,7 @@ private:
     Ui::MainWindow *ui;
     QStatusBar* m_StatusBar;
     PairedDevicesWindow *m_pairedDevicesWindow;
+    QBluetoothSocket* m_socket;
 };
 
 #endif // MAINWINDOW_H

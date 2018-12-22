@@ -19,6 +19,47 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// Public slots:
+
+void MainWindow::deviceSelected(QBluetoothDeviceInfo device) {
+    static const QString serviceUuid(QStringLiteral("00001101-0000-1000-8000-00805F9B34FB"));
+
+    m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol, this);
+    m_socket->connectToService(QBluetoothAddress(device.address()), \
+                           QBluetoothUuid(serviceUuid));
+    connect(m_socket, SIGNAL(error(QBluetoothSocket::SocketError)), \
+            this, SLOT(socketError(QBluetoothSocket::SocketError)));
+    connect(m_socket, SIGNAL(connected()), \
+            this, SLOT(onConnected()));
+    connect(m_socket, SIGNAL(disconnected()), \
+            this, SLOT(disconnected()));
+    connect(m_socket, SIGNAL(readyRead()), \
+            this, SLOT(readData()));
+    connect(m_socket, SIGNAL(stateChanged(QBluetoothSocket::SocketState)), \
+            this, SLOT(socketStateChanged(QBluetoothSocket::SocketState)));
+    m_pairedDevicesWindow->deleteLater();
+}
+
+void MainWindow::socketError(QBluetoothSocket::SocketError error) {
+    qDebug() << "Socket error: " << error;
+}
+
+void MainWindow::onConnected() {
+    qDebug() << "Connected";
+}
+
+void MainWindow::disconnected() {
+    qDebug() << "Disconnected";
+}
+
+void MainWindow::readData() {
+
+}
+
+void MainWindow::socketStateChanged(QBluetoothSocket::SocketState) {
+
+}
+
 // Private Slots:
 
 void MainWindow::laserToggle(bool toggle) {

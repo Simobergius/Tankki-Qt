@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui bluetooth
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    paireddeviceswindow.cpp
+        paireddeviceswindow.cpp \
+        devicebutton.cpp
 
 HEADERS  += mainwindow.h \
-    paireddeviceswindow.h
+        paireddeviceswindow.h \
+        devicebutton.h
 
 FORMS    += mainwindow.ui \
-    paireddeviceswindow.ui
+        paireddeviceswindow.ui
