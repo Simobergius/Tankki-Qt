@@ -2,10 +2,12 @@
 #define MAINWINDOW_H
 
 #include "paireddeviceswindow.h"
+#include "bluetoothworker.h"
 
 #include <QMainWindow>
 #include <QPushButton>
 #include <QKeyEvent>
+#include <QThread>
 
 namespace Ui {
 class MainWindow;
@@ -19,18 +21,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 signals:
-    void actionForwardButtonClick();
-    void actionForwardButtonRelease();
-    void actionLeftButtonClick();
-    void actionLeftButtonRelease();
-    void actionBackwardButtonClick();
-    void actionBackwardButtonRelease();
-    void actionRightButtonClick();
-    void actionRightButtonRelease();
-    void actionMGOn();
-    void actionMGOff();
-    void actionCannonOn();
-    void actionCannonOff();
     void actionLaserToggle();
     void actionListConnectedDevices();
 
@@ -48,16 +38,21 @@ private slots:
     void onCannonButtonRelease();
     void onMGButtonClick();
     void onMGButtonRelease();
-    void on_actionListConnectedDevices_triggered();
+    void on_actionSearchDevices_triggered();
 
 private:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 
+    QString socketErrorToString(QBluetoothSocket::SocketError);
+    QString socketStateToString(QBluetoothSocket::SocketState);
+
     Ui::MainWindow *ui;
     QStatusBar* m_StatusBar;
     PairedDevicesWindow *m_pairedDevicesWindow;
     QBluetoothSocket* m_socket;
+    BluetoothWorker* m_worker;
+    QThread m_workerThread;
 };
 
 #endif // MAINWINDOW_H

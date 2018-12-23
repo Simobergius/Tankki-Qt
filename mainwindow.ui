@@ -47,8 +47,6 @@
      </item>
     </layout>
    </widget>
-   <zorder>horizontalLayoutWidget</zorder>
-   <zorder>fireCannonButton</zorder>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -64,17 +62,17 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
-   <addaction name="actionListConnectedDevices"/>
+   <addaction name="actionSearchDevices"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionListConnectedDevices">
+  <action name="actionSearchDevices">
    <property name="text">
-    <string>List paired devices</string>
+    <string>Find Bluetooth evices</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List paired Bluetooth devices and select which to connect to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search for Bluetooth devices and select which to connect to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>
