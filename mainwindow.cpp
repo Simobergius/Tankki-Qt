@@ -25,8 +25,8 @@ void MainWindow::deviceSelected(QBluetoothDeviceInfo device) {
     static const QString serviceUuid(QStringLiteral("00001101-0000-1000-8000-00805F9B34FB"));
 
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol, this);
-    m_socket->connectToService(QBluetoothAddress(device.address()), \
-                           QBluetoothUuid(serviceUuid));
+    m_socket->connectToService(QBluetoothAddress(device.address()), 1);
+    
     connect(m_socket, SIGNAL(error(QBluetoothSocket::SocketError)), \
             this, SLOT(socketError(QBluetoothSocket::SocketError)));
     connect(m_socket, SIGNAL(connected()), \
