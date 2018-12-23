@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
         paireddeviceswindow.cpp \
         devicebutton.cpp \
-        bluetoothworker.cpp
+        bluetoothworker.cpp \
+        math_utils.cpp
 
 HEADERS  += mainwindow.h \
         paireddeviceswindow.h \
         devicebutton.h \
-        bluetoothworker.h
+        bluetoothworker.h \
+        math_utils.h
 
 FORMS    += mainwindow.ui \
         paireddeviceswindow.ui

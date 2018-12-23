@@ -1,14 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "math_utils.h"
 
 #include <QDebug>
 
 // Public:
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_worker(new BluetoothWorker(50))
+    QMainWindow(parent), ui(new Ui::MainWindow), \
+    m_socket(0), m_worker(new BluetoothWorker(50)), m_timerId(-1), \
+    m_forwardPressed(false), m_backwardPressed(false), \
+    m_leftPressed(false), m_rightPressed(false), \
+    m_speedForwardBackward(0), m_speedLeftRight(0)
 {
     ui->setupUi(this);
     m_StatusBar = MainWindow::statusBar();
@@ -17,21 +20,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_worker->moveToThread(&m_workerThread);
 
+    m_timerId = startTimer(50);
+
     connect(&m_workerThread, SIGNAL(started()), \
             m_worker, SLOT(onThreadStarted()));
     connect(&m_workerThread, SIGNAL(finished()), \
-            m_worker, SLOT(onthreadFinished()));
+            m_worker, SLOT(onThreadFinished()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    if(m_workerThread.isRunning()) {
+        m_workerThread.quit();
+        m_workerThread.wait();
+    }
 }
 
 // Public slots:
 
 void MainWindow::deviceSelected(QBluetoothDeviceInfo device) {
-    static const QString serviceUuid(QStringLiteral("00001101-0000-1000-8000-00805F9B34FB"));
 
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol, this);
     m_socket->connectToService(QBluetoothAddress(device.address()), 1);
@@ -117,25 +126,85 @@ void MainWindow::on_actionSearchDevices_triggered()
     m_pairedDevicesWindow->show();
 }
 
+void MainWindow::on_actionDisconnect_triggered() {
+    if(m_socket) {
+        m_socket->disconnectFromService();
+    }
+}
+
+// Protected:
+
+void MainWindow::timerEvent(QTimerEvent *e) {
+    if(e->timerId() == m_timerId) {
+        if(m_forwardPressed && !m_backwardPressed) {
+            if (m_speedForwardBackward + 5 < 127) {
+                m_speedForwardBackward += 5;
+            }
+            else {
+                m_speedForwardBackward = 127;
+            }
+        }else if(!m_forwardPressed && m_backwardPressed) {
+            if(m_speedForwardBackward - 5 > -127) {
+                m_speedForwardBackward -= 5;
+            }
+            else {
+                m_speedForwardBackward = -127;
+            }
+        }
+        else {
+            m_speedForwardBackward = 0;
+        }
+
+        if(!m_leftPressed && m_rightPressed) {
+            if(m_speedLeftRight + 5 < 127) {
+                m_speedLeftRight += 5;
+            }
+            else {
+                m_speedLeftRight = 127;
+            }
+        }
+        else if(m_leftPressed && !m_rightPressed) {
+            if(m_speedLeftRight - 5 > -127) {
+                m_speedLeftRight -= 5;
+            }
+            else {
+                m_speedLeftRight = -127;
+            }
+        }
+        else {
+            m_speedLeftRight = 0;
+        }
+        
+        m_worker->setSpeedForwardBackward(m_speedForwardBackward);
+        m_worker->setSpeedLeftRight(m_speedLeftRight);
+
+        emit setRightForwardPower(MathUtils::map(m_worker->getRightTrackSpeed(), 127, 254, 0, 100));
+        emit setRightBackwardPower(MathUtils::map(m_worker->getRightTrackSpeed(), 127, 0, 0, 100));
+        emit setLeftForwardPower(MathUtils::map(m_worker->getLeftTrackSpeed(), 127, 254, 0, 100));
+        emit setLeftBackwardPower(MathUtils::map(m_worker->getLeftTrackSpeed(), 127, 0, 0, 100));
+    }
+}
 
 // Private:
 
 void MainWindow::keyPressEvent(QKeyEvent *k) {
-    //qDebug() << k->text() << " Pressed";
-    // TODO: Implement functionality to change worker movement values according to key presses
     if(!k->isAutoRepeat()) {
         switch(k->key()) {
             case Qt::Key_W:
                 qDebug() << "key 'w' pressed";
+                m_forwardPressed = true;
                 break;
             case Qt::Key_A:
                 qDebug() << "key 'a' pressed";
+                m_leftPressed = true;
                 break;
             case Qt::Key_S:
                 qDebug() << "key 's' pressed";
+                m_backwardPressed = true;
                 break;
             case Qt::Key_D:
                 qDebug() << "key 'd' pressed";
+                m_rightPressed = true;
                 break;
             case Qt::Key_Q:
                 qDebug() << "key 'q' pressed";
@@ -143,7 +212,7 @@ void MainWindow::keyPressEvent(QKeyEvent *k) {
                 break;
             case Qt::Key_E:
                 qDebug() << "key 'e' pressed";
-                emit actionLaserToggle();
+                emit actionLaserToggle(); // Used in UI to check/uncheck tickbox
                 break;
             case Qt::Key_Space:
                 qDebug() << "key ' ' pressed";
@@ -156,20 +225,23 @@ void MainWindow::keyPressEvent(QKeyEvent *k) {
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *k) {
-    //qDebug() << k->text() << " Released";
     if(!k->isAutoRepeat()) {
         switch(k->key()) {
             case Qt::Key_W:
                 qDebug() << "key 'w' released";
+                m_forwardPressed = false;
                 break;
             case Qt::Key_A:
                 qDebug() << "key 'a' released";
+                m_leftPressed = false;
                 break;
             case Qt::Key_S:
                 qDebug() << "key 's' released";
+                m_backwardPressed = false;
                 break;
             case Qt::Key_D:
                 qDebug() << "key 'd' released";
+                m_rightPressed = false;
                 break;
             case Qt::Key_Q:
                 qDebug() << "key 'q' released";

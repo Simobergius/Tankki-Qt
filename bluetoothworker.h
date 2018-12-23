@@ -22,6 +22,9 @@ public:
     void setCannon(bool cannon);
     void setLaser(bool laser);
 
+    quint8 getLeftTrackSpeed();
+    quint8 getRightTrackSpeed();
+
 public slots:
     void onThreadFinished();
     void onThreadStarted();
@@ -37,8 +40,8 @@ private:
     bool m_stopRequested;
     QBluetoothSocket* m_socket;
 
-    int m_speedForwardBackward;
-    int m_speedLeftRight;
+    int m_speedForwardBackward, m_speedLeftRight;
+    quint8 m_rightTrackSpeed, m_leftTrackSpeed;
     bool m_shootCannon, m_laser, m_shootMg;
 };
 

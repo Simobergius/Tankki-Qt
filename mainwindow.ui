@@ -7,43 +7,199 @@
     <x>0</x>
     <y>0</y>
     <width>760</width>
-    <height>500</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="horizontalLayoutWidget">
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>400</y>
-      <width>319</width>
-      <height>30</height>
+      <x>0</x>
+      <y>0</y>
+      <width>751</width>
+      <height>441</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
      <item>
-      <widget class="QPushButton" name="fireCannonButton">
-       <property name="text">
-        <string>Fire Cannon</string>
+      <layout class="QVBoxLayout" name="verticalLayoutLeftPower">
+       <property name="spacing">
+        <number>5</number>
        </property>
-      </widget>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QProgressBar" name="leftForwardPower">
+         <property name="value">
+          <number>24</number>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="leftBackwardPower">
+         <property name="value">
+          <number>24</number>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="fireMGButton">
-       <property name="text">
-        <string>Machine Gun</string>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
        </property>
-      </widget>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="widget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="fireCannonButton">
+           <property name="text">
+            <string>Fire Cannon</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="fireMGButton">
+           <property name="text">
+            <string>Machine Gun</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="laserCheckBox">
+           <property name="text">
+            <string>Laser on/off</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QCheckBox" name="laserCheckBox">
-       <property name="text">
-        <string>Laser on/off</string>
+      <layout class="QVBoxLayout" name="verticalLayoutRightPower">
+       <property name="spacing">
+        <number>5</number>
        </property>
-      </widget>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
+       </property>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QProgressBar" name="rightForwardPower">
+         <property name="value">
+          <number>24</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="rightBackwardPower">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="value">
+          <number>24</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>true</bool>
+         </property>
+         <property name="textDirection">
+          <enum>QProgressBar::TopToBottom</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -65,14 +221,23 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionSearchDevices"/>
+   <addaction name="actionDisconnect"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSearchDevices">
    <property name="text">
-    <string>Find Bluetooth evices</string>
+    <string>Find Bluetooth Devices</string>
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search for Bluetooth devices and select which to connect to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+   <property name="toolTip">
+    <string>Disconnect from current device</string>
    </property>
   </action>
  </widget>
@@ -86,8 +251,8 @@
    <slot>laserToggle(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>442</x>
-     <y>447</y>
+     <x>698</x>
+     <y>460</y>
     </hint>
     <hint type="destinationlabel">
      <x>472</x>
@@ -175,6 +340,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>setLeftForwardPower(int)</signal>
+   <receiver>leftForwardPower</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>710</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>22</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>setLeftBackwardPower(int)</signal>
+   <receiver>leftBackwardPower</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>311</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>23</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>setRightBackwardPower(int)</signal>
+   <receiver>rightBackwardPower</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>709</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>725</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>setRightForwardPower(int)</signal>
+   <receiver>rightForwardPower</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>702</x>
+     <y>222</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>720</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>actionMGOn()</signal>
@@ -182,6 +411,10 @@
   <signal>actionCannonOn()</signal>
   <signal>actionCannonOff()</signal>
   <signal>actionLaserToggle()</signal>
+  <signal>setRightForwardPower(int)</signal>
+  <signal>setRightBackwardPower(int)</signal>
+  <signal>setLeftForwardPower(int)</signal>
+  <signal>setLeftBackwardPower(int)</signal>
   <slot>laserToggle(bool)</slot>
   <slot>onMGButtonClick()</slot>
   <slot>onCannonButtonClick()</slot>

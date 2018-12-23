@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QKeyEvent>
 #include <QThread>
+#include <QTimerEvent>
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,10 @@ public:
     ~MainWindow();
 signals:
     void actionLaserToggle();
+    void setRightForwardPower(int);
+    void setRightBackwardPower(int);
+    void setLeftForwardPower(int);
+    void setLeftBackwardPower(int);
     void actionListConnectedDevices();
 
 public slots:
@@ -39,7 +44,10 @@ private slots:
     void onMGButtonClick();
     void onMGButtonRelease();
     void on_actionSearchDevices_triggered();
+    void on_actionDisconnect_triggered();
 
+protected:
+    virtual void timerEvent(QTimerEvent *e);
 private:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
@@ -53,6 +61,11 @@ private:
     QBluetoothSocket* m_socket;
     BluetoothWorker* m_worker;
     QThread m_workerThread;
+
+    int m_timerId;
+
+    bool m_forwardPressed, m_backwardPressed, m_leftPressed, m_rightPressed;
+    int m_speedForwardBackward, m_speedLeftRight;
 };
 
 #endif // MAINWINDOW_H
