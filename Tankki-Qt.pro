@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
         paireddeviceswindow.cpp \
-        devicebutton.cpp
+        devicebutton.cpp \
+        bluetoothworker.cpp
 
 HEADERS  += mainwindow.h \
         paireddeviceswindow.h \
-        devicebutton.h
+        devicebutton.h \
+        bluetoothworker.h
 
 FORMS    += mainwindow.ui \
         paireddeviceswindow.ui
