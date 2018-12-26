@@ -9,6 +9,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow), \
     m_socket(0), m_worker(new BluetoothWorker(50)), m_timerId(-1), \
+    m_settings(new QSettings("user_settings.ini", QSettings::NativeFormat, this)), \
     m_forwardPressed(false), m_backwardPressed(false), \
     m_leftPressed(false), m_rightPressed(false), \
     m_speedForwardBackward(0), m_speedLeftRight(0)
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_StatusBar = MainWindow::statusBar();
     m_StatusBar->showMessage("Not Connected");
+    //m_touchAreaWidget = findChild<TouchAreaWidget*>("movementControlWidget");
     grabKeyboard();
 
     m_worker->moveToThread(&m_workerThread);
@@ -132,56 +134,73 @@ void MainWindow::on_actionDisconnect_triggered() {
     }
 }
 
+void MainWindow::on_actionSettings_triggered() {
+    m_settingsDialog = new SettingsDialog(this, m_settings);
+    m_settingsDialog->show();
+}
+
 // Protected:
 
 void MainWindow::timerEvent(QTimerEvent *e) {
     if(e->timerId() == m_timerId) {
-        if(m_forwardPressed && !m_backwardPressed) {
-            if (m_speedForwardBackward + 5 < 127) {
-                m_speedForwardBackward += 5;
-            }
-            else {
-                m_speedForwardBackward = 127;
-            }
-        }else if(!m_forwardPressed && m_backwardPressed) {
-            if(m_speedForwardBackward - 5 > -127) {
-                m_speedForwardBackward -= 5;
-            }
-            else {
-                m_speedForwardBackward = -127;
-            }
-        }
-        else {
-            m_speedForwardBackward = 0;
-        }
+        if(m_settings) {
+            switch (strToInputType(m_settings->value("trackControlMethod", QVariant("keyboardControl")).toString())) {
+            case KeyboardInput:
+                if(m_forwardPressed && !m_backwardPressed) {
+                    if (m_speedForwardBackward + 5 < 127) {
+                        m_speedForwardBackward += 5;
+                    }
+                    else {
+                        m_speedForwardBackward = 127;
+                    }
+                }else if(!m_forwardPressed && m_backwardPressed) {
+                    if(m_speedForwardBackward - 5 > -127) {
+                        m_speedForwardBackward -= 5;
+                    }
+                    else {
+                        m_speedForwardBackward = -127;
+                    }
+                }
+                else {
+                    m_speedForwardBackward = 0;
+                }
 
-        if(!m_leftPressed && m_rightPressed) {
-            if(m_speedLeftRight + 5 < 127) {
-                m_speedLeftRight += 5;
-            }
-            else {
-                m_speedLeftRight = 127;
-            }
-        }
-        else if(m_leftPressed && !m_rightPressed) {
-            if(m_speedLeftRight - 5 > -127) {
-                m_speedLeftRight -= 5;
-            }
-            else {
-                m_speedLeftRight = -127;
-            }
-        }
-        else {
-            m_speedLeftRight = 0;
-        }
+                if(!m_leftPressed && m_rightPressed) {
+                    if(m_speedLeftRight + 5 < 127) {
+                        m_speedLeftRight += 5;
+                    }
+                    else {
+                        m_speedLeftRight = 127;
+                    }
+                }
+                else if(m_leftPressed && !m_rightPressed) {
+                    if(m_speedLeftRight - 5 > -127) {
+                        m_speedLeftRight -= 5;
+                    }
+                    else {
+                        m_speedLeftRight = -127;
+                    }
+                }
+                else {
+                    m_speedLeftRight = 0;
+                }
+                break;
         
-        m_worker->setSpeedForwardBackward(m_speedForwardBackward);
-        m_worker->setSpeedLeftRight(m_speedLeftRight);
+            case MouseInput:
+                qDebug() << "Mouse Input selected";
+                break;
+            default:
+                break;
+            }
 
-        emit setRightForwardPower(MathUtils::map(m_worker->getRightTrackSpeed(), 127, 254, 0, 100));
-        emit setRightBackwardPower(MathUtils::map(m_worker->getRightTrackSpeed(), 127, 0, 0, 100));
-        emit setLeftForwardPower(MathUtils::map(m_worker->getLeftTrackSpeed(), 127, 254, 0, 100));
-        emit setLeftBackwardPower(MathUtils::map(m_worker->getLeftTrackSpeed(), 127, 0, 0, 100));
+            m_worker->setSpeedForwardBackward(m_speedForwardBackward);
+            m_worker->setSpeedLeftRight(m_speedLeftRight);
+
+            emit setRightForwardPower(MathUtils::map(m_worker->getRightTrackSpeed(), 127, 254, 0, 100));
+            emit setRightBackwardPower(MathUtils::map(m_worker->getRightTrackSpeed(), 127, 0, 0, 100));
+            emit setLeftForwardPower(MathUtils::map(m_worker->getLeftTrackSpeed(), 127, 254, 0, 100));
+            emit setLeftBackwardPower(MathUtils::map(m_worker->getLeftTrackSpeed(), 127, 0, 0, 100));
+        }
     }
 }
 
@@ -317,5 +336,17 @@ QString MainWindow::socketStateToString(QBluetoothSocket::SocketState s) {
         default:
             return QString();
             break;
+    }
+}
+
+InputType MainWindow::strToInputType(QString str) {
+    if(str == "keyboardInput") {
+        return KeyboardInput;
+    }
+    else if (str == "mouseInput") {
+        return MouseInput;
+    }
+    else {
+        return KeyboardInput;
     }
 }

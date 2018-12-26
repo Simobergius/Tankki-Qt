@@ -56,7 +56,7 @@
        <item>
         <widget class="QProgressBar" name="leftForwardPower">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
          <property name="textVisible">
           <bool>false</bool>
@@ -69,7 +69,7 @@
        <item>
         <widget class="QProgressBar" name="leftBackwardPower">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
          <property name="textVisible">
           <bool>false</bool>
@@ -102,7 +102,7 @@
         <number>5</number>
        </property>
        <item>
-        <widget class="QWidget" name="widget" native="true">
+        <widget class="TouchAreaWidget" name="movementControlWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -161,7 +161,7 @@
        <item>
         <widget class="QProgressBar" name="rightForwardPower">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -180,7 +180,7 @@
           <enum>Qt::LeftToRight</enum>
          </property>
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -222,6 +222,7 @@
    </attribute>
    <addaction name="actionSearchDevices"/>
    <addaction name="actionDisconnect"/>
+   <addaction name="actionSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSearchDevices">
@@ -240,8 +241,21 @@
     <string>Disconnect from current device</string>
    </property>
   </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TouchAreaWidget</class>
+   <extends>QWidget</extends>
+   <header>touchareawidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

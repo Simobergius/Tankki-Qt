@@ -17,13 +17,18 @@ SOURCES += main.cpp\
         paireddeviceswindow.cpp \
         devicebutton.cpp \
         bluetoothworker.cpp \
-        math_utils.cpp
+        math_utils.cpp \
+        touchareawidget.cpp \
+        settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
         paireddeviceswindow.h \
         devicebutton.h \
         bluetoothworker.h \
-        math_utils.h
+        math_utils.h \
+        touchareawidget.h \
+        settingsdialog.h
 
 FORMS    += mainwindow.ui \
-        paireddeviceswindow.ui
+        paireddeviceswindow.ui \
+    settingsdialog.ui

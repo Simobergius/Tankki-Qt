@@ -8,3 +8,4 @@ moc_*.cpp
 moc_*.h
 *.o
 ui_*.h
+user_settings.ini
