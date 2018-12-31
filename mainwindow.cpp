@@ -9,7 +9,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow), \
     m_socket(0), m_worker(new BluetoothWorker(50)), m_timerId(-1), \
-    m_settings(new QSettings("user_settings.ini", QSettings::NativeFormat, this)), \
+    m_settingsFile(new QSettings("user_settings.ini", QSettings::NativeFormat, this)), \
     m_forwardPressed(false), m_backwardPressed(false), \
     m_leftPressed(false), m_rightPressed(false), \
     m_speedForwardBackward(0), m_speedLeftRight(0)
@@ -95,6 +95,13 @@ void MainWindow::socketStateChanged(QBluetoothSocket::SocketState state) {
     m_StatusBar->showMessage("Socket state changed: " + socketStateToString(state));
 }
 
+void MainWindow::settingsChanged(int r) {
+    if (r == QDialog::Accepted) {
+        m_settings.inputType = strToInputType(m_settingsFile->value("trackcontrolMethod", "keyboardInput").toString());
+        m_settings.maxPower = m_settingsFile->value("maximumPower", 100).toInt();
+    }
+}
+
 // Private Slots:
 
 void MainWindow::laserToggle(bool toggle) {
@@ -135,7 +142,9 @@ void MainWindow::on_actionDisconnect_triggered() {
 }
 
 void MainWindow::on_actionSettings_triggered() {
-    m_settingsDialog = new SettingsDialog(this, m_settings);
+    m_settingsDialog = new SettingsDialog(this, m_settingsFile);
+    connect(m_settingsDialog, SIGNAL(finished(int)), \
+            this, SLOT(settingsChanged(int)));
     m_settingsDialog->show();
 }
 
@@ -143,8 +152,8 @@ void MainWindow::on_actionSettings_triggered() {
 
 void MainWindow::timerEvent(QTimerEvent *e) {
     if(e->timerId() == m_timerId) {
-        if(m_settings) {
-            switch (strToInputType(m_settings->value("trackControlMethod", QVariant("keyboardControl")).toString())) {
+        if(m_settingsFile) {
+            switch (m_settings.inputType) {
             case KeyboardInput:
                 if(m_forwardPressed && !m_backwardPressed) {
                     if (m_speedForwardBackward + 5 < 127) {

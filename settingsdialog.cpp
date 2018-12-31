@@ -2,6 +2,7 @@
 #include "ui_settingsdialog.h"
 
 #include <QSlider>
+#include <QDebug>
 
 SettingsDialog::SettingsDialog(QWidget *parent, QSettings *settings) :
     QDialog(parent), \
@@ -15,6 +16,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QSettings *settings) :
 
     // Set Radiobutton and slider values to current settings
     QString controlType = m_settings->value("trackControlMethod").toString();
+    qDebug() << controlType;
 
     if (controlType == "keyboardInput") {
         m_controlMethodButtonGroup.button(0)->setChecked(true);

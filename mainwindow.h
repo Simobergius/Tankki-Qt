@@ -51,6 +51,8 @@ public slots:
     void readData();
     void socketStateChanged(QBluetoothSocket::SocketState);
 
+    void settingsChanged(int r);
+
 private slots:
     void laserToggle(bool);
     void onCannonButtonClick();
@@ -84,7 +86,8 @@ private:
 
     int m_timerId;
 
-    QSettings *m_settings;
+    QSettings *m_settingsFile;
+    Settings m_settings;
 
     bool m_forwardPressed, m_backwardPressed, m_leftPressed, m_rightPressed;
     int m_speedForwardBackward, m_speedLeftRight;
